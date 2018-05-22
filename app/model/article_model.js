@@ -11,27 +11,27 @@ module.exports = app => {
             autoIncrement: true
         },
         userId: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER(11),
             allowNull: false,
             defaultValue: 0
         },
         categoryId: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER(11),
             allowNull: false,
             defaultValue: 0
         },
         content: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
             defaultValue: ""
         },
         originalUrl: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
             defaultValue: ""
         },
         title: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
             defaultValue: ""
         },
