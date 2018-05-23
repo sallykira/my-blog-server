@@ -103,7 +103,7 @@ module.exports = app => class ArticleService extends Service {
         //默认按照首页查询
         let articleRows = await this.ArticleModel.findAndCount({
             where: where,
-            attributes: ['id','categoryId','content','originalUrl','title','createdAt'],
+            attributes: ['id', 'categoryId', 'content', 'originalUrl', 'title', 'createdAt'],
             limit: Number(pageSize | 0),
             offset: this.helper.getOffset(pageNo, pageSize),
             order: [['id', 'DESC']]

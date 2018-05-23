@@ -16,19 +16,19 @@ module.exports = app => class TagController extends Controller {
     }
 
     //新增标签
-    async addTag(){
+    async addTag() {
         const response = await this.TagService.addTag(this.request.body);
         this.ctx.body = response;
     }
 
     //更新标签
-    async updateTag(){
+    async updateTag() {
         const response = await this.TagService.updateTag(this.request.body);
         this.ctx.body = response;
     }
 
     //删除标签
-    async deleteTag(){
+    async deleteTag() {
         const response = await this.TagService.deleteTag(this.request.query);
         this.ctx.body = response;
     }

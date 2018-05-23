@@ -16,19 +16,19 @@ module.exports = app => class CategoryController extends Controller {
     }
 
     //新增文章类别
-    async addCategory(){
+    async addCategory() {
         const response = await this.CategoryService.addCategory(this.request.body);
         this.ctx.body = response;
     }
 
     //更新文章类别
-    async updateCategory(){
+    async updateCategory() {
         const response = await this.CategoryService.updateCategory(this.request.body);
         this.ctx.body = response;
     }
 
     //删除文章类别
-    async deleteCategory(){
+    async deleteCategory() {
         const response = await this.CategoryService.deleteCategory(this.request.query);
         this.ctx.body = response;
     }

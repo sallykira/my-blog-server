@@ -39,10 +39,10 @@ module.exports = app => {
             defaultValue: '0'
         }
     }, {
-        tableName: 'blog_tag_article', timestamps: false ,version: true
+        tableName: 'blog_tag_article', timestamps: false, version: true
     });
 
-    TagArticleModel.associate = function() {
+    TagArticleModel.associate = function () {
 
     }
 

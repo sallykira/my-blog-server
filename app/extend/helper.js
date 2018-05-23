@@ -2,10 +2,10 @@ const moment = require('moment');
 
 exports = module.exports = {
 
-    YYYYMMDD_HHmmss : "YYYY-MM-DD HH:mm:ss",
+    YYYYMMDD_HHmmss: "YYYY-MM-DD HH:mm:ss",
 
     //时间格式化
-    formatDateTime(date,pattern) {
+    formatDateTime(date, pattern) {
         return moment(date).format(pattern)
     },
 
@@ -14,7 +14,7 @@ exports = module.exports = {
     },
 
     //db工具
-    getOffset(pageNo,pageSize) {
+    getOffset(pageNo, pageSize) {
         return Number(pageNo - 1 | 0) * Number(pageSize | 0);
     }
 };

@@ -33,7 +33,7 @@ module.exports = app => class TagService extends Service {
      * @param id
      * @returns {Promise<*>}
      */
-    async updateTag({id,name}) {
+    async updateTag({id, name}) {
         if (!id || !name.trim()) return this.BizResponse.isError(ResponseCode.ILLEGAL_ARGUMENT, '参数错误');
         const tag = await this.TagModel.findById(id);
         if (!tag) return this.BizResponse.isError(ResponseCode.INSTANCE_NOT_EXIST, '标签不存在');
@@ -63,10 +63,10 @@ module.exports = app => class TagService extends Service {
      */
     async listTag({articleId}) {
         let where = {
-            status : ValidCode.VALID
+            status: ValidCode.VALID
         }
         //根据文章查询
-        if (!!articleId){
+        if (!!articleId) {
             where.articleId = articleId;
         }
         let tagMap = new HashMap();
@@ -83,7 +83,7 @@ module.exports = app => class TagService extends Service {
             return result;
         });
         //为空直接返回
-        if (tagRows.count == 0){
+        if (tagRows.count == 0) {
             return this.BizResponse.isSuccess({
                 tagList: null,
                 total: 0
@@ -95,7 +95,7 @@ module.exports = app => class TagService extends Service {
                 tagId: {
                     [this.Op.in]: tagMap.keys()
                 },
-                status : ValidCode.VALID
+                status: ValidCode.VALID
             },
             attributes: ['tagId', [app.Sequelize.fn('COUNT', app.Sequelize.col('tagId')), 'count']],
             group: 'tagId',
@@ -103,7 +103,7 @@ module.exports = app => class TagService extends Service {
         }).then(rows => {
             const map = new HashMap();
             rows && rows.forEach(r => {
-                map.set(r.tagId,r.count);
+                map.set(r.tagId, r.count);
             })
             return map;
         })
@@ -124,7 +124,7 @@ module.exports = app => class TagService extends Service {
      * @param articleId
      * @returns {Promise<*>}
      */
-    async listTagByArticleId(articleId){
+    async listTagByArticleId(articleId) {
         //标签
         const tagIdArr = await this.TagArticleModel.findAll({
             where: {
@@ -133,7 +133,7 @@ module.exports = app => class TagService extends Service {
             },
             attributes: ['tagId']
         }).then(rows => rows && _.map(rows, 'tagId'));
-        if(!tagIdArr || tagIdArr.length == 0) return null;
+        if (!tagIdArr || tagIdArr.length == 0) return null;
         //标签集合
         return await this.TagModel.findAll({
             where: {

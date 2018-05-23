@@ -1,4 +1,3 @@
-
 module.exports = app => {
     const DataTypes = app.Sequelize;
 
@@ -9,7 +8,7 @@ module.exports = app => {
             primaryKey: true,
             autoIncrement: true
         },
-        name:{
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
             defaultValue: ""
@@ -35,10 +34,10 @@ module.exports = app => {
             defaultValue: '0'
         }
     }, {
-        tableName: 'blog_article_tag', timestamps: false ,version: true
+        tableName: 'blog_article_tag', timestamps: false, version: true
     });
 
-    TagModel.associate = function() {
+    TagModel.associate = function () {
 
     }
 

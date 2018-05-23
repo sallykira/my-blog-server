@@ -56,11 +56,11 @@ module.exports = app => {
             defaultValue: '0'
         }
     }, {
-        tableName: 'blog_article', timestamps: false ,version: true
+        tableName: 'blog_article', timestamps: false, version: true
     });
 
-    ArticleModel.associate = function() {
-        ArticleModel.belongsTo(app.model.CategoryModel, { foreignKey: 'categoryId' });
+    ArticleModel.associate = function () {
+        ArticleModel.belongsTo(app.model.CategoryModel, {foreignKey: 'categoryId'});
     }
 
     return ArticleModel;
