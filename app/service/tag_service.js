@@ -61,12 +61,19 @@ module.exports = app => class TagService extends Service {
      * 获取标签列表
      * @returns {Promise<*>}
      */
-    async listTag() {
+    async listTag({articleId}) {
+        let where = {
+            status : ValidCode.VALID
+        }
+        //根据文章查询
+        if (!!articleId){
+            where.articleId = articleId;
+        }
         let tagMap = new HashMap();
         //标签集合
         const tagRows = await this.TagModel.findAndCount({
             attributes: ['id', 'name'],
-            where: {status: 1}
+            where: where
         }).then(result => {
             if (result.rows) {
                 result.rows.map(r => {
@@ -110,6 +117,33 @@ module.exports = app => class TagService extends Service {
             tagList: tagList,
             total: tagRows.count
         })
+    }
+
+    /**
+     * 根据文章id获取标签集合
+     * @param articleId
+     * @returns {Promise<*>}
+     */
+    async listTagByArticleId(articleId){
+        //标签
+        const tagIdArr = await this.TagArticleModel.findAll({
+            where: {
+                articleId: articleId,
+                status: ValidCode.VALID
+            },
+            attributes: ['tagId']
+        }).then(rows => rows && _.map(rows, 'tagId'));
+        if(!tagIdArr || tagIdArr.length == 0) return null;
+        //标签集合
+        return await this.TagModel.findAll({
+            where: {
+                id: {
+                    [this.Op.in]: tagIdArr
+                },
+                status: ValidCode.VALID
+            },
+            attributes: ['id', 'name']
+        });
     }
 
     /**

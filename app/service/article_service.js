@@ -14,6 +14,7 @@ module.exports = app => class ArticleService extends Service {
         this.TagModel = ctx.model.TagModel;
         this.TagArticleModel = ctx.model.TagArticleModel;
         this.BizResponse = ctx.response.BizResponse;
+        this.TagService = ctx.service.tagService;
         this.helper = ctx.helper;
         this.Op = app.Sequelize.Op;
     }
@@ -48,7 +49,7 @@ module.exports = app => class ArticleService extends Service {
      * 获取文章列表
      * @returns {Promise<*>}
      */
-    async listArticle({queryType = 2, categoryId = 0, tagId = 1, pageNo = 1, pageSize = 10}) {
+    async listArticle({queryType = 0, categoryId = 0, tagId = 0, pageNo = 1, pageSize = 10}) {
         //按照标签查询
         let articleIdArr = [];
         if (ArticleQueryType.TAG == queryType) {
@@ -140,27 +141,7 @@ module.exports = app => class ArticleService extends Service {
             r = r.toJSON()
             r.createdAt = this.helper.formatDefaultDateTime(r.createdAt)
             r.categoryName = categoryMap.get(r.categoryId)
-            //标签id
-            const tagIdArr = await this.TagArticleModel.findAll({
-                where: {
-                    articleId: r.id,
-                    status: ValidCode.VALID
-                },
-                attributes: ['tagId']
-            }).then(rows => rows && _.map(rows, 'tagId'));
-            if (!!tagIdArr && tagIdArr.length > 0) {
-                //标签集合
-                const tagRows = await this.TagModel.findAll({
-                    where: {
-                        id: {
-                            [this.Op.in]: tagIdArr
-                        },
-                        status: ValidCode.VALID
-                    },
-                    attributes: ['id', 'name']
-                });
-                r.tags = tagRows;
-            }
+            r.tags = await this.TagService.listTagByArticleId(r.id);
             return r;
         }))
         return {
@@ -182,6 +163,10 @@ module.exports = app => class ArticleService extends Service {
         //文章类别
         const category = await this.CategoryModel.findById(article.categoryId);
         article.categoryName = category.name;
+        article.createdAt = this.helper.formatDefaultDateTime(article.createdAt)
+        article.author = '黄志鹏'
+        //文章标签
+        article.tags = await this.TagService.listTagByArticleId(article.id);
         //文章评论
         return this.BizResponse.isSuccess(article);
     }
