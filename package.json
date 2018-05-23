@@ -7,6 +7,8 @@
     "egg": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.4",
+    "hashmap": "^2.3.0",
+    "lodash": "^4.17.10",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3"
   },

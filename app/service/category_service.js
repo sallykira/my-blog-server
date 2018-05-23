@@ -1,11 +1,13 @@
 const Service = require('egg').Service;
+const ResponseCode = require('../common/response_code');
+
 
 module.exports = app => class CategoryService extends Service {
     constructor(ctx) {
         super(ctx);
         this.CategoryModel = ctx.model.CategoryModel;
         this.BizResponse = ctx.response.BizResponse;
-        this.ResponseCode = ctx.response.ResponseCode;
+        this.Helper = ctx.helper;
     }
 
     /**
@@ -14,7 +16,7 @@ module.exports = app => class CategoryService extends Service {
      * @returns {Promise<*>}
      */
     async addCategory({name}){
-        if (!name.trim()) return this.BizResponse.isError(this.ResponseCode.ILLEGAL_ARGUMENT,'参数错误');
+        if (!name.trim()) return this.BizResponse.isError(ResponseCode.ILLEGAL_ARGUMENT,'参数错误');
         const category = await this.CategoryModel.create({ name });
         if (!category) return this.BizResponse.isError(-1,'添加文章分类失败');
         return this.BizResponse.isSuccess();
@@ -56,11 +58,9 @@ module.exports = app => class CategoryService extends Service {
      */
     async listCategory(){
         const { count, rows} = await this.CategoryModel.findAndCount({
+            attributes: ['id', 'name'],
             where : { status : 1}
-        });
-        //无数据直接返回
-        if (rows.length < 1) this.BizResponse.isSuccess();
-        rows.forEach(row => row && row.toJSON());
+        }).then(result => result.rows && result.rows.map(r => r.toJSON()));
         return this.BizResponse.isSuccess({
             categoryList: rows,
             total: count

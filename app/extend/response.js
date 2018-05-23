@@ -1,11 +1,10 @@
-const ResponseCode = require('../common/response_code');
 
 class BizResponse {
 
     constructor(respCode, respMsg, data) {
         this.respCode = respCode,
-        this.respMsg = respMsg,
-        this.data = data
+            this.respMsg = respMsg,
+            this.data = data
     }
 
     static isSuccess(data){
@@ -18,7 +17,6 @@ class BizResponse {
 }
 
 module.exports = {
-    ResponseCode,
-    BizResponse,
-};
+    BizResponse
+}
 

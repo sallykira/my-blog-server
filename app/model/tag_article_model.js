@@ -1,42 +1,25 @@
-//文章表
-/* indent size: 2 */
 module.exports = app => {
     const DataTypes = app.Sequelize;
 
-    const ArticleModel = app.model.define('blog_article', {
+    const TagArticleModel = app.model.define('blog_tag_article', {
         id: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
-        userId: {
+        tagId: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
             defaultValue: 0
         },
-        categoryId: {
+        articleId: {
             type: DataTypes.INTEGER(11),
             allowNull: false,
             defaultValue: 0
-        },
-        content: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: ""
-        },
-        originalUrl: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: ""
-        },
-        title: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            defaultValue: ""
         },
         status: {
-            type: DataTypes.INTEGER(4),
+            type: DataTypes.TINYINT(4),
             allowNull: false,
             defaultValue: '1'
         },
@@ -56,12 +39,15 @@ module.exports = app => {
             defaultValue: '0'
         }
     }, {
-        tableName: 'blog_article', timestamps: false ,version: true
+        tableName: 'blog_tag_article', timestamps: false ,version: true
     });
 
-    ArticleModel.associate = function() {
-        ArticleModel.belongsTo(app.model.CategoryModel, { foreignKey: 'categoryId' });
+    TagArticleModel.associate = function() {
+
     }
 
-    return ArticleModel;
-};
+    return TagArticleModel;
+
+}
+
+
